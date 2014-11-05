@@ -6,7 +6,7 @@ WORKDIR /minecraft
 ENV VERSION 1.8
 ENV MEMORY 1546
 
-ADD server.properties server.properties
+ADD server.properties /minecraft/server.properties
 
 RUN echo "eula=true" > eula.txt
 

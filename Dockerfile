@@ -1,16 +1,35 @@
 FROM armbuild/scw-app-java:latest
 
-RUN mkdir /minecraft
-WORKDIR /minecraft
+RUN apt-get update \
+ && apt-get install -y \
+    screen \
+    python-pip \
+    rdiff-backup \
+    git \
+ && pip2 install cherrypy==3.2.3 \
+ && mkdir -p /usr/games/minecraft /var/games/minecraft \
+ && git clone https://github.com/hexparrot/mineos /usr/games/minecraft \
+ && ln -s /opt/java/jdk1.8.0_33/bin/java /usr/local/bin/java # fix this better
 
-ENV VERSION 1.8.8
-ENV MEMORY 1546
+WORKDIR /usr/games/minecraft
+RUN git config core.filemode false \
+ && chmod +x server.py mineos_console.py generate-sslcert.sh \
+ && ln -s /usr/games/minecraft/mineos_console.py /usr/local/bin/mineos \
+ && cp /usr/games/minecraft/init/mineos /etc/init.d/ \
+ && chmod 744 /etc/init.d/mineos \
+ && update-rc.d mineos defaults \
+ && cp /usr/games/minecraft/init/minecraft /etc/init.d/ \
+ && chmod 744 /etc/init.d/minecraft \
+ && update-rc.d minecraft defaults \
+ && cp /usr/games/minecraft/mineos.conf /etc/ \
+ && ./generate-sslcert.sh \
+ && adduser --disabled-password --gecos '' admin \
+ && echo 'admin:admin' | chpasswd \
+ && groupadd minecraft \
+ && usermod -a -G minecraft admin \
+ && chgrp -R minecraft /usr/games/minecraft /var/games/minecraft \
+ && chmod g+s /usr/games/minecraft /var/games/minecraft
 
-ADD server.properties /minecraft/server.properties
-
-RUN echo "eula=true" > eula.txt
-
-RUN wget -q --no-check-certificate "https://s3.amazonaws.com/Minecraft.Download/versions/${VERSION}/minecraft_server.${VERSION}.jar" -O mcserv.jar
-CMD . /etc/profile.d/oraclejdk.sh; java -server -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=4 -XX:+AggressiveOpts -Xms${MEMORY}M -Xmx${MEMORY}M -jar mcserv.jar nogui
-
-EXPOSE 25565
+# -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=4 -XX:+AggressiveOpts
+# EXPOSE 8080
+# EXPOSE 25565

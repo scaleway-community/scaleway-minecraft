@@ -1,0 +1,29 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          changepw
+# Required-Start:    $all
+# Required-Stop:     $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: changepw webui
+# Description:       changepw webui
+### END INIT INFO
+
+NAME=changepw
+PIDFILE=/var/run/changepw.pid
+SCRIPTPATH=/root/changepw
+
+set -e
+. /lib/lsb/init-functions
+
+case "$1" in
+    'start')
+        log_begin_msg "Starting $NAME..."
+        php -S 0.0.0.0:9000 -t $SCRIPTPATH >/dev/null 2>&1 </dev/null &
+        log_action_end_msg 0
+        ;;
+
+esac
+exit $RETVAL
+

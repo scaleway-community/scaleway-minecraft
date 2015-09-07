@@ -6,15 +6,21 @@ RUN apt-get update \
     python-pip \
     rdiff-backup \
     git \
+    php5-cli \
  && pip2 install cherrypy==3.2.3 \
  && mkdir -p /usr/games/minecraft /var/games/minecraft \
  && git clone https://github.com/hexparrot/mineos /usr/games/minecraft \
- && ln -s /opt/java/jdk1.8.0_33/bin/java /usr/local/bin/java # fix this better
+ && ln -s /opt/java/jdk1.8.0_33/bin/java /usr/bin/java # fix this better
 
+COPY ./patches/etc/init.d/changepw /etc/init.d/changepw
+COPY ./patches/root/changepw/index.php /root/changepw/index.php
 WORKDIR /usr/games/minecraft
+
 RUN git config core.filemode false \
  && chmod +x server.py mineos_console.py generate-sslcert.sh \
  && ln -s /usr/games/minecraft/mineos_console.py /usr/local/bin/mineos \
+ && chmod 744 /etc/init.d/changepw \
+ && update-rc.d changepw defaults \
  && cp /usr/games/minecraft/init/mineos /etc/init.d/ \
  && chmod 744 /etc/init.d/mineos \
  && update-rc.d mineos defaults \

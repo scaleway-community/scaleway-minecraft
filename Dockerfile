@@ -9,8 +9,7 @@ RUN apt-get update \
     php5-cli \
  && pip2 install cherrypy==3.2.3 \
  && mkdir -p /usr/games/minecraft /var/games/minecraft \
- && git clone https://github.com/hexparrot/mineos /usr/games/minecraft \
- && ln -s /opt/java/jdk1.8.0_33/bin/java /usr/bin/java # fix this better
+ && git clone https://github.com/hexparrot/mineos /usr/games/minecraft
 
 COPY ./patches/etc/init.d/changepw /etc/init.d/changepw
 COPY ./patches/root/changepw/index.php /root/changepw/index.php

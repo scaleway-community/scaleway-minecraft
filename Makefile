@@ -4,7 +4,7 @@ VERSION =		latest
 VERSION_ALIASES =	1.0.0 1.0 1
 TITLE =			Minecraft server
 DESCRIPTION =		Minecraft server image using MineOS
-SOURCE_URL =		https://github.com/scaleway/image-app-minecraft
+SOURCE_URL =		https://github.com/scaleway-community/scaleway-minecraft
 VENDOR_URL =		https://minecraft.net
 
 SHELL_DOCKER_OPTS ?=    -p 25565:25565 -p 8080:8080

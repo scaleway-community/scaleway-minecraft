@@ -1,4 +1,4 @@
-FROM armbuild/scw-app-java:latest
+FROM scaleway/java:latest
 
 RUN apt-get update \
  && apt-get install -y \

@@ -1,11 +1,11 @@
 # Minecraft image on Scaleway
 
-[![Travis](https://img.shields.io/travis/scaleway/image-app-minecraft.svg)](https://travis-ci.org/scaleway/image-app-minecraft)
+[![Travis](https://img.shields.io/travis/scaleway-community/scaleway-minecraft.svg)](https://travis-ci.org/scaleway-community/scaleway-minecraft)
 [![Scaleway ImageHub](https://img.shields.io/badge/ImageHub-view-ff69b4.svg)](https://hub.scaleway.com/minecraft.html)
 
 Scripts to build the official Minecraft image on Scaleway
 
-This image is built using [Image Tools](https://github.com/scaleway/image-tools) and depends on the official [Java](https://github.com/scaleway/image-app-java) image.
+This image is built using [Image Tools](https://github.com/scaleway/image-tools) and depends on the official [Java](https://github.com/scaleway-community/scaleway-java) image.
 
 
 ![banner](https://pbs.twimg.com/media/COYa28cWgAE_Ngg.png:medium)

@@ -1,5 +1,4 @@
-DOCKER_NAMESPACE =	armbuild/
-NAME =			scw-app-minecraft
+NAME =			minecraft
 VERSION =		latest
 VERSION_ALIASES =	1.0.0 1.0 1
 TITLE =			Minecraft server

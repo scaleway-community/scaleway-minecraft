@@ -5,6 +5,7 @@ TITLE =			Minecraft server
 DESCRIPTION =		Minecraft server image using MineOS
 SOURCE_URL =		https://github.com/scaleway-community/scaleway-minecraft
 VENDOR_URL =		https://minecraft.net
+DEFAULT_IMAGE_ARCH =	x86_64
 
 SHELL_DOCKER_OPTS ?=    -p 25565:25565 -p 8080:8080
 

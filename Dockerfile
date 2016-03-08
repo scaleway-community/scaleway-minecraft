@@ -1,5 +1,14 @@
-FROM scaleway/java:latest
+## -*- docker-image-name: "scaleway/minecraft:latest" -*-
+FROM scaleway/java:amd64-8
+# following 'FROM' lines are used dynamically thanks do the image-builder
+# which dynamically update the Dockerfile if needed.
+#FROM scaleway/java:armhf-8       # arch=armv7l
+#FROM scaleway/java:arm64-8       # arch=arm64
+#FROM scaleway/java:i386-8        # arch=i386
+#FROM scaleway/java:mips-8        # arch=mips
 
+
+# Install deps
 RUN apt-get update \
  && apt-get install -y \
     screen \
@@ -11,10 +20,13 @@ RUN apt-get update \
  && mkdir -p /usr/games/minecraft /var/games/minecraft \
  && git clone https://github.com/hexparrot/mineos /usr/games/minecraft
 
-COPY ./patches/etc/init.d/changepw /etc/init.d/changepw
-COPY ./patches/root/changepw/index.php /root/changepw/index.php
-WORKDIR /usr/games/minecraft
 
+# Patch rootfs
+COPY ./overlay /
+
+
+# Build
+WORKDIR /usr/games/minecraft
 RUN git config core.filemode false \
  && chmod +x server.py mineos_console.py generate-sslcert.sh \
  && ln -s /usr/games/minecraft/mineos_console.py /usr/local/bin/mineos \
@@ -34,6 +46,7 @@ RUN git config core.filemode false \
  && usermod -a -G minecraft admin \
  && chgrp -R minecraft /usr/games/minecraft /var/games/minecraft \
  && chmod g+s /usr/games/minecraft /var/games/minecraft
+
 
 # -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=4 -XX:+AggressiveOpts
 # EXPOSE 8080
